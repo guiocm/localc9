@@ -1,0 +1,80 @@
+#!/bin/sh
+
+ROOT_DIR=`dirname $(dirname $(readlink -f $0))`
+NODEJS_DIR=$ROOT_DIR/nodejs
+CLOUD9_DIR=$ROOT_DIR/cloud9
+
+# Project directory
+PROJECT_DIR=$1
+if [ -z "$PROJECT_DIR" ]; then
+    echo "Project directory:"
+    read PROJECT_DIR
+    if [ -z "$PROJECT_DIR" ]; then
+        PROJECT_DIR=`pwd`
+    fi
+fi
+PROJECT_DIR=`readlink -f $PROJECT_DIR`
+if [ ! -d $PROJECT_DIR ]; then
+    echo "Directory does not exist, creating..."
+    mkdir -p $PROJECT_DIR
+fi
+
+ADDRESS=$2
+if [ -z "$ADDRESS" ]; then
+    echo "Open server (default: no):"
+    read ADDRESS
+    if [ "$ADDRESS" = "yes" ] || [ "$ADDRESS" = "y" ] ||
+    [ "$ADDRESS" = "Yes" ] || [ "$ADDRESS" = "YES" ]; then
+        ADDRESS=0.0.0.0
+    else
+        ADDRESS=localhost
+    fi
+fi
+
+CONFIG=default.js
+if [ "$ADDRESS" != "localhost" ] && [ "$ADDRESS" != "127.0.0.1" ] ; then
+    CONFIG=default_open.js
+fi;
+
+PORT=$3
+if [ -z "$PORT" ]; then
+    echo "Port (default: 10000):"
+    read PORT
+    if [ -z "$PORT" ]; then
+        PORT=10000
+        nc -z localhost $PORT; used=$?;
+        while [ $used -eq 0 ] && [ $PORT -lt 65535 ]; do
+            PORT=`expr $PORT + 1`
+            nc -z localhost $PORT; used=$?;
+        done
+    fi
+fi
+
+USERNAME=$4
+if [ -z "$USERNAME" ]; then
+    echo "Username (default: $USER):"
+    read USERNAME
+    if [ -z "$USERNAME" ]; then
+        USERNAME=$USER
+    fi;
+fi
+
+PASSWORD=$4
+if [ -z "$PASSWORD" ]; then
+    echo "Password (default: $USER):"
+    read PASSWORD
+    if [ -z "$PASSWORD" ]; then
+        PASSWORD=$USER
+    fi;
+fi
+
+echo "Project directory: $PROJECT_DIR"
+echo "Listen address: $ADDRESS"
+echo "Listen port: $PORT"
+echo "Configuration file: $CONFIG"
+echo "Username: $USERNAME"
+echo "Password: $USERNAME"
+
+export PATH=$PATH:$NODEJS_DIR/bin
+$ROOT_DIR/cloud9/bin/cloud9.sh $CONFIG -w $PROJECT_DIR -l $ADDRESS -p $PORT \
+--username $USERNAME --password $PASSWORD
