@@ -5,9 +5,6 @@ CLOUD9_URL=https://github.com/ajaxorg/cloud9/archive/5b62a7c83445ccba9f50592d41a
 NODEJS_BASE_URL=http://nodejs.org/dist
 NODEJS_VERSION=v0.8.26
 
-NODEJS_X64_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x64.tar.gz
-NODEJS_X86_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x86.tar.gz
-
 # CLOUD9_URL=http://localhost:8000/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
 # NODEJS_X64_URL=http://localhost:8000/node-v0.8.26-linux-x64.tar.gz
 # NODEJS_X86_URL=http://localhost:8000/node-v0.8.26-linux-x86.tar.gz
@@ -32,6 +29,7 @@ if [ ! -d $NODEJS_DIR ]; then
         
     *)
         echo "Could not find a suitable NodeJS version (unsupported OS)"
+        exit
         ;;
     esac
 
@@ -59,9 +57,10 @@ export PATH=$PATH:$NODEJS_DIR/bin
 if [ ! -d $CLOUD9_DIR ]; then
     mkdir -p $CLOUD9_DIR
     
+    echo "Downloading Cloud9"
     wget $CLOUD9_URL -O cloud9.zip
     if [ $? != 0 ]; then
-        echo "Error downloading NodeJS."
+        echo "Error downloading Cloud9."
         exit
     fi;    
     
