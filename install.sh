@@ -1,6 +1,10 @@
 #!/bin/sh
 
 CLOUD9_URL=https://github.com/ajaxorg/cloud9/archive/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
+
+NODEJS_BASE_URL=http://nodejs.org/dist
+NODEJS_VERSION=v0.8.26
+
 NODEJS_X64_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x64.tar.gz
 NODEJS_X86_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x86.tar.gz
 
@@ -19,24 +23,11 @@ if [ ! -d $NODEJS_DIR ]; then
     
     case `uname -a` in
     Linux*x86_64*)
-        echo "Downloading NodeJS for Linux x86_64"
-        
-        # TODO: move filename to var
-        wget $NODEJS_X64_URL -O nodejs.tar.gz
-        if [ $? != 0 ]; then
-            echo "Error downloading NodeJS."
-            exit
-        fi;
-        tar xzvf 
+        arch=x64
         ;;
 
     Linux*i686*)
-        echo "Downloading NodeJS for Linux x86"
-        wget $NODEJS_X86_URL -O nodejs.tar.gz
-        if [ $? != 0 ]; then
-            echo "Error downloading NodeJS."
-            exit
-        fi;        
+        arch=x86
         ;;
         
     *)
@@ -44,14 +35,23 @@ if [ ! -d $NODEJS_DIR ]; then
         ;;
     esac
 
-    tar xzvf nodejs.tar.gz -C $NODEJS_DIR
+    echo "Downloading NodeJS for Linux ${arch}"
+
+    nodejs_file=node-${NODEJS_VERSION}-linux-${arch}.tar.gz
+    wget ${NODEJS_BASE_URL}/${NODEJS_VERSION}/${nodejs_file}
+    if [ $? != 0 ]; then
+        echo "Error downloading NodeJS."
+        exit
+    fi;        
+
+    tar xzvf $nodejs_file -C $NODEJS_DIR
     
     # Move to the right directory
     subdir=`find $NODEJS_DIR -maxdepth 1 -and -not -path $NODEJS_DIR`
     mv $subdir/* $NODEJS_DIR
     rm -r $subdir
 
-    rm nodejs.tar.gz
+    rm $nodejs_file
 fi
 export PATH=$PATH:$NODEJS_DIR/bin
 
