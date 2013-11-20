@@ -1,12 +1,12 @@
 #!/bin/sh
 
-#CLOUD9_URL=https://github.com/ajaxorg/cloud9/archive/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
-#NODEJS_X64_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x64.tar.gz
-#NODEJS_X86_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x86.tar.gz
+CLOUD9_URL=https://github.com/ajaxorg/cloud9/archive/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
+NODEJS_X64_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x64.tar.gz
+NODEJS_X86_URL=http://nodejs.org/dist/v0.8.26/node-v0.8.26-linux-x86.tar.gz
 
-CLOUD9_URL=http://localhost:8000/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
-NODEJS_X64_URL=http://localhost:8000/node-v0.8.26-linux-x64.tar.gz
-NODEJS_X86_URL=http://localhost:8000/node-v0.8.26-linux-x86.tar.gz
+# CLOUD9_URL=http://localhost:8000/5b62a7c83445ccba9f50592d41a7128b1f1fe868.zip
+# NODEJS_X64_URL=http://localhost:8000/node-v0.8.26-linux-x64.tar.gz
+# NODEJS_X86_URL=http://localhost:8000/node-v0.8.26-linux-x86.tar.gz
 
 ROOT_DIR=`pwd`
 # If you change these subdirectory, change bin/cloud9 accordingly
