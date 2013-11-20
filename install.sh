@@ -84,7 +84,7 @@ if [ ! -d $CLOUD9_DIR ]; then
         patch -d $CLOUD9_DIR -p1 < cloud9.patch
         
         cd $CLOUD9_DIR
-        npm update
+        npm install
     fi
 else
     echo "Files are in place, updating..."
